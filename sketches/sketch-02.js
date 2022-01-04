@@ -3,7 +3,13 @@ const math = require('canvas-sketch-util/math')
 const random = require('canvas-sketch-util/random')
 
 const settings = {
-  dimensions: [ 1080, 1080 ]
+  //dimensions: [ 1080, 1080 ]
+  // Enable an animation loop
+  animate: false,
+  // Set loop duration to 3
+  duration: 3,
+  // Use a small size for better GIF file size
+  dimensions: [ 1080, 1080 ],
 };
 
 const sketch = () => {
@@ -15,11 +21,11 @@ const sketch = () => {
 
     const cx = width * 0.5;
     const cy = height * 0.5;
-    const w = width * 0.001;
-    const h = height * 0.1;
+    const w = width * 0.0001;
+    const h = height * random.range(0, 1);
     let x, y;
 
-    const num = 1000;
+    const num = 10000;
     const radius = width * 0.3;
 
     for(let i = 0; i < num; i ++) {
@@ -38,7 +44,7 @@ const sketch = () => {
 
       context.beginPath();
       //context.rect(-w * 0.5, -h * 0.5, w, h);
-      context.rect(-w * 0.5, random.range(0, -h * 1), w, h);
+      context.rect(-w * 0.5, random.range(0, -h * 1), w, random.range(0, h));
       context.fill();
       context.restore();
 
