@@ -1,6 +1,7 @@
 const canvasSketch = require('canvas-sketch');
 const random = require('canvas-sketch-util/random');
 const math = require('canvas-sketch-util/math');
+const palettes = require('/usr/local/lib/node_modules/nice-color-palettes');
 
 
 const settings = {
@@ -18,16 +19,17 @@ const settings = {
 
 const sketch = ({ context, width, height }) => {
   const agents = [];
+  const palette = random.pick(palettes).slice(0, 5);
 
-  for (let i = 0; i < 400; i++) {
+  for (let i = 0; i < 1000; i++) {
     const x = random.range(0, width);
     const y = random.range(0, height);
 
-    agents.push(new Agent(x, y));
+    agents.push(new Agent(x, y, random.pick(palette)));
   }
 
   return ({ context, width, height }) => {
-    context.fillStyle = 'white';
+    context.fillStyle = 'black';
     context.fillRect(0, 0, width, height);
 
     for (let i = 0; i < agents.length; i++){
@@ -38,11 +40,13 @@ const sketch = ({ context, width, height }) => {
 
         const dist = agent.pos.getDistance(other.pos);
 
-        if (dist > 200) continue;
+        if (dist > 150) continue;
 
-        context.lineWidth = math.mapRange(dist, 0, 200, 2, 0.01);
+        context.lineWidth = math.mapRange(dist, 0, 200, 0.01, 0.1);
 
+        context.strokeStyle = random.pick(palette);
         context.beginPath();
+
         context.moveTo(agent.pos.x, agent.pos.y);
         context.lineTo(other.pos.x, other.pos.y);
 
@@ -77,15 +81,17 @@ class Vector {
 
 class Agent {
 
-  constructor(x, y) {
+  constructor(x, y, color) {
     this.pos = new Vector(x, y);
     this.vel = new Vector(random.range(-1, 1), random.range(-1, 1));
-    this.radius = random.range(4, 12);
+    this.radius = random.range(2, 4);
+    this.color = color;
   }
 
   update() {
-    this.pos.x += this.vel.x
-    this.pos.y += this.vel.y
+    this.pos.x += this.vel.x * 10;
+    this.pos.y += this.vel.y * 1;
+    //this.color = random.pick(palette);
   }
 
   bounce(width, height) {
@@ -94,13 +100,12 @@ class Agent {
   }
 
   draw(context) {
-    //context.fillStyle = 'black';
+    context.fillStyle = this.color;
 
     context.save()
     context.translate(this.pos.x, this.pos.y);
 
-    context.lineWidth = 4;
-
+    context.lineWidth = 1;
     context.beginPath();
     context.arc(0, 0, this.radius, 0, Math.PI * 2);
     context.fill();
