@@ -10,10 +10,10 @@ const settings = {
   animate: true
 };
 
-//const animate = () => {
-//  console.log('hi');
-//  requestAnimationFrame(animate);
-//};
+const animate = () => {
+  console.log('hi');
+  requestAnimationFrame(animate);
+};
 
 //animate();
 
