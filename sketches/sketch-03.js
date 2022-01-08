@@ -7,7 +7,7 @@ const palettes = require('/usr/local/lib/node_modules/nice-color-palettes');
 const settings = {
   // Use a small size for better GIF file size
   dimensions: [ 1080, 1080 ],
-  animate: false
+  animate: true
 };
 
 //const animate = () => {
